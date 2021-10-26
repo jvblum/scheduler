@@ -13,10 +13,19 @@ export default function DayListItem(props) {
 
   const dayListClass = classNames('day-list__item', { 'day-list__item--selected': selected }, { 'day-list__item--full': !spots });
 
+  // takes number and outputs different message according to the number
+  const formatSpotsMessage = spots => {
+    if (spots === 0) return 'no spots remaining';
+    if (spots === 1) return `${spots} spot remaining`;
+    return `${spots} spots remaining`;
+  };
+
+  const spotsMessage = formatSpotsMessage(spots);
+
   return (
     <li onClick={() => setDay(name)} className={dayListClass}>
       <h2 className="text--regular">{name}</h2> 
-      <h3 className="text--light">{spots} spots remaining</h3>
+      <h3 className="text--light">{spotsMessage}</h3>
     </li>
   );
 }
