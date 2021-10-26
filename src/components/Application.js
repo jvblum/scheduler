@@ -4,6 +4,9 @@ import "components/Application.scss";
 import Button from "./Button";
 
 export default function Application(props) {
+  const testEvent = () => {
+    alert('hey');
+  }
   return (
     <main className="layout">
       <section className="sidebar">
@@ -22,7 +25,10 @@ export default function Application(props) {
 
       </section>
       <section className="schedule">
-        <Button>hey</Button>
+        <Button confirm>hey</Button>
+        <Button danger>you</Button>
+        <Button onClick={testEvent}>onClick</Button>
+        <Button disabled>off</Button>
         {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
       </section>
     </main>
