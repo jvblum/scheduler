@@ -16,6 +16,10 @@ import InterviewerList from "components/InterviewerList";
 import Appointment from "components/Appointment/index.js";
 import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
+import Show from "components/Appointment/Show";
+import Confirm from "components/Appointment/Confirm";
+import Status from "components/Appointment/Status";
+import Error from "components/Appointment/Error";
 
 
 storiesOf("Button", module)
@@ -167,4 +171,25 @@ storiesOf("Appointment", module)
   .add("Appointment", () => <Appointment />)
   .add("Appointment with Time", () => <Appointment time="12PM"/>)
   .add("Header", () => <Header time="12PM"/>)
-  .add("Empty", () => <Empty onAdd={action("onAdd")} />);
+  .add("Empty", () => <Empty onAdd={action("onAdd")} />)
+  .add("Show", () => {
+    return (
+      <Show 
+        student="Lydia Miller-Jones the Second"
+        interviewer={interviewer}
+        onEdit={action("onEdit")}
+        onDelete={action("onDelete")}
+      />
+    )
+  })
+  .add("Confirm", () => {
+    return (
+      <Confirm
+        message="Delete the appointment?"
+        onCancel={action("onCancel")}
+        onConfirm={action("onConfirm")}
+      />
+    )
+  })
+  .add("Status", () => <Status message="Deleting" />)
+  .add("Error", () => <Error message="could not delete appointment" onClose={action("onClose")} />)
