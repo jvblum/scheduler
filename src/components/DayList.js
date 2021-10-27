@@ -4,15 +4,15 @@ import DayListItem from "./DayListItem";
 export default function DayList(props) {
   const { 
     days,
-    day,
-    setDay
+    value,
+    onChange
    } = props;
-  const parsedDays = days.map(elm => 
+  const parsedDays = days.map(day => 
     <DayListItem 
-      key={elm.id} 
-      selected={day === elm.name} 
-      setDay={setDay} 
-      {...elm}
+      key={day.id} 
+      selected={value === day.name} 
+      setDay={() => onChange(day.name)} 
+      {...day}
     />
   );
   return <ul>{parsedDays}</ul>;
