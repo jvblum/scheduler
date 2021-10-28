@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import "components/Application.scss";
 import Button from "./Button";
 import DayList from "./DayList";
+import Appointment from "./Appointment";
+
+import appointments from "data/data";
 
 export default function Application(props) {
   const [daySelect, setDaySelect] = useState('Monday');
@@ -24,6 +27,8 @@ export default function Application(props) {
       spots: 0,
     },
   ];
+
+  const parsedappointments = appointments.map(appointment => <Appointment key={appointment.id} {...appointment}/>);
 
   return (
     <main className="layout">
@@ -49,10 +54,11 @@ export default function Application(props) {
 
       </section>
       <section className="schedule">
-        <Button confirm>hey</Button>
+        {parsedappointments}
+        {/* <Button confirm>hey</Button>
         <Button danger>you</Button>
         {/* <Button onClick={testEvent}>onClick</Button> */}
-        <Button disabled>off</Button>
+        {/* <Button disabled>off</Button> */}
         {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
       </section>
     </main>
