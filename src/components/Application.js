@@ -7,21 +7,40 @@ import DayList from "./DayList";
 import Appointment from "./Appointment";
 
 import appointments from "data/data";
+import getAppointmentsForDay from "./helpers/selectors";
+import InterviewerList from "./InterviewerList";
 
 export default function Application(props) {
-  const [daySelect, setDaySelect] = useState('Monday');
-  const [days, setDays] = useState([]);
+  const [state, setState] = useState({
+    day: "Wednesday",
+    days: [],
+    appointments: {},
+    interviewers: {}
+  });
 
+  const setDay = day => setState(prev => ({ ...prev, day }));
 
-  // Create an effect to make a GET request to /api/days using axios and update the days state with the response.
+  // Create an effect to make GET request using axios
   useEffect(() => {
-    axios.get('/api/days').then(res => {
-      setDays(res.data);
+    Promise.all([
+      axios.get('/api/days'),
+      axios.get('/api/appointments'),
+      axios.get('/api/interviewers')
+    ]).then(all => {
+      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     });
   }, []);
 
-  const parsedappointments = appointments.map(appointment => <Appointment key={appointment.id} {...appointment}/>);
-
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const parsedappointments = dailyAppointments.map(appointment => {
+    return (
+    <Appointment key={appointment.id} {...appointment}>
+      <InterviewerList/>
+    </Appointment>
+    );
+    // return <Appointment key={appointment.id} {...appointment}/>;
+  });
+  
   return (
     <main className="layout">
       <section className="sidebar">
@@ -33,9 +52,9 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-            days={days}
-            value={daySelect}
-            onChange={setDaySelect}
+            days={state.days}
+            value={state.day}
+            onChange={setDay}
           />
         </nav>
         <img
@@ -43,15 +62,13 @@ export default function Application(props) {
           src="images/lhl.png"
           alt="Lighthouse Labs"
         />
-
       </section>
       <section className="schedule">
         {parsedappointments}
         {/* <Button confirm>hey</Button>
         <Button danger>you</Button>
-        {/* <Button onClick={testEvent}>onClick</Button> */}
-        {/* <Button disabled>off</Button> */}
-        {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
+        <Button onClick={testEvent}>onClick</Button>
+        <Button disabled>off</Button> */}
       </section>
     </main>
   );
