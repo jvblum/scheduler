@@ -24,6 +24,6 @@ export function getInterview(state, interview) {
   return procInterview;
 };
 
-export default function getInterviewersForDay(state, day) {
-  
+export function getInterviewersForDay(state, day) {
+
 }
