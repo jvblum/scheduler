@@ -7,6 +7,7 @@ import DayList from "./DayList";
 import Appointment from "./Appointment";
 
 import getAppointmentsForDay from "./helpers/selectors";
+import { getInterviewersForDay, getInterview } from "components/helpers/selectors";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -30,23 +31,25 @@ export default function Application(props) {
   }, []);
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
-  // const schedule = dailyAppointments.map((appointment) => {
-  //   const interview = getInterview(state, appointment.interview);
+  const dailyInterviewers = getInterviewersForDay(state, state.day);
+  const schedule = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
   
-  //   return (
-  //     <Appointment
-  //       key={appointment.id}
-  //       id={appointment.id}
-  //       time={appointment.time}
-  //       interview={interview}
-  //     />
-  //   );
-  // });
-  const parsedappointments = dailyAppointments.map(appointment => {
     return (
-    <Appointment key={appointment.id} {...appointment}/>
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+        interviewers={dailyInterviewers}
+      />
     );
   });
+  // const parsedAppointments = dailyAppointments.map(appointment => {
+  //   return (
+  //   <Appointment key={appointment.id} {...appointment}/>
+  //   );
+  // });
   
   return (
     <main className="layout">
@@ -71,7 +74,9 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {parsedappointments}
+        {schedule}
+        {/* {parsedAppointments} */}
+
         {/* <Button confirm>hey</Button>
         <Button danger>you</Button>
         <Button onClick={testEvent}>onClick</Button>
