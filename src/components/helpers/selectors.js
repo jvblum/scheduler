@@ -9,3 +9,17 @@ export default function getAppointmentsForDay(state, day) {
   }
   return appointments;
 }
+
+// takes states object and interview and fills in the correct interviewer object value from the given interview
+export function getInterview(state, interview) {
+  if (!interview) {
+    return null;
+  };
+
+  // copy interview
+  const procInterview = {...interview};
+  // change interviewer id to interviewer object
+  procInterview.interviewer = state.interviewers[procInterview.interviewer];
+
+  return procInterview;
+};

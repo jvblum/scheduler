@@ -9,8 +9,6 @@ export default function DayList(props) {
    } = props;
 
   if (days !== undefined) {
-    console.log('days', days);
-    console.log('value', value);
       const parsedDays = days.map(day => 
       <DayListItem 
       key={day.id} 

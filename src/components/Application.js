@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
 import "components/Application.scss";
-import Button from "./Button";
+// import Button from "./Button";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
 
-import appointments from "data/data";
 import getAppointmentsForDay from "./helpers/selectors";
-import InterviewerList from "./InterviewerList";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -32,13 +30,22 @@ export default function Application(props) {
   }, []);
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
+  // const schedule = dailyAppointments.map((appointment) => {
+  //   const interview = getInterview(state, appointment.interview);
+  
+  //   return (
+  //     <Appointment
+  //       key={appointment.id}
+  //       id={appointment.id}
+  //       time={appointment.time}
+  //       interview={interview}
+  //     />
+  //   );
+  // });
   const parsedappointments = dailyAppointments.map(appointment => {
     return (
-    <Appointment key={appointment.id} {...appointment}>
-      <InterviewerList/>
-    </Appointment>
+    <Appointment key={appointment.id} {...appointment}/>
     );
-    // return <Appointment key={appointment.id} {...appointment}/>;
   });
   
   return (
