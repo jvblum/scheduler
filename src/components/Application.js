@@ -19,7 +19,6 @@ export default function Application(props) {
 
   const setDay = day => setState(prev => ({ ...prev, day }));
   const bookInterview = (id, interview) => {
-    console.log(id, interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -28,9 +27,15 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    setState(prev => {
-      return {...prev, appointments }
-    });
+
+    return axios.put(`/api/appointments/${id}`, appointment)
+      .then(res => {
+        console.log('rest', res);
+        setState(prev => {
+          return {...prev, appointments }
+        });
+      })
+      .catch(err => console.log('put-appointments', err.message));
   };
   
 

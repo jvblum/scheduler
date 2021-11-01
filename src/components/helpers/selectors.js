@@ -26,7 +26,6 @@ export function getInterview(state, interview) {
 
 export function getInterviewersForDay(state, day) {
   const interviewers = []; 
-  console.log(state);
   for (const elm of state.days) {
     if (elm.name === day) {
       elm.interviewers.forEach(interviewer => {
