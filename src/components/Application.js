@@ -53,7 +53,7 @@ export default function Application(props) {
         return {...prev, appointments }
       });
     })
-    .catch(err => console.log('put-appointments', err.message));
+    .catch(err => console.log('delete-appointments', err.message));
   };
   
 
