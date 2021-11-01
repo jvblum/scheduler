@@ -18,6 +18,21 @@ export default function Application(props) {
   });
 
   const setDay = day => setState(prev => ({ ...prev, day }));
+  const bookInterview = (id, interview) => {
+    console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState(prev => {
+      return {...prev, appointments }
+    });
+  };
+  
 
   // Create an effect to make GET request using axios
   useEffect(() => {
@@ -42,6 +57,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={dailyInterviewers}
+        bookInterview={bookInterview}
       />
     );
   });
