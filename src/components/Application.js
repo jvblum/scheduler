@@ -37,6 +37,24 @@ export default function Application(props) {
       })
       .catch(err => console.log('put-appointments', err.message));
   };
+
+  const cancelInterview = id => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    return axios.delete(`/api/appointments/${id}`, id)
+    .then(res => {
+      setState(prev => {
+        return {...prev, appointments }
+      });
+    })
+    .catch(err => console.log('put-appointments', err.message));
+  };
   
 
   // Create an effect to make GET request using axios
@@ -63,6 +81,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={dailyInterviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });

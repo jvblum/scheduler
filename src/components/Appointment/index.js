@@ -8,17 +8,20 @@ import Show from "./Show";
 import Empty from "./Empty";
 import Form from "./Form";
 import Status from "./Status";
+import Confirm from "./Confirm";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
+const CONFIRM = "CONFIRM";
 
 export default function Appointment(props) {
   const {
     interview,
     interviewers,
-    bookInterview, 
+    bookInterview,
+    cancelInterview,
     id
   } = props;
 
@@ -36,7 +39,12 @@ export default function Appointment(props) {
       transition(SHOW);
     });
   };
-  
+  const deleteAppointment = () => {
+    transition(SAVING)
+    cancelInterview(id).then(() => {
+      transition(EMPTY);
+    });
+  };
 
   // Show should get onEdit and onDelete props
   return (
@@ -47,11 +55,12 @@ export default function Appointment(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          onDelete={() => transition(CONFIRM)}
         />
       )}
       {mode === CREATE && <Form onSave={save} onCancel={back} interviewers={interviewers}/>}
       {mode === SAVING && <Status message={SAVING} />}
-
+      {mode === CONFIRM && <Confirm message='Cancel Interview?' onCancel={back} onConfirm={deleteAppointment} />}
     </article>
   );
 };
