@@ -9,13 +9,17 @@ import Empty from "./Empty";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
+const DELETING = "DELETING";
 const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
   const {
@@ -36,15 +40,25 @@ export default function Appointment(props) {
       interviewer
     };
     transition(SAVING);
-    bookInterview(id, interview).then(() => {
-      transition(SHOW);
-    });
+    bookInterview(id, interview)
+      .then(() => {
+        transition(SHOW);
+      })
+      .catch((err) => {
+        console.log('put-appointment', err.message);
+        transition(ERROR_SAVE, true);
+      });;
   };
   const deleteAppointment = () => {
-    transition(SAVING)
-    cancelInterview(id).then(() => {
-      transition(EMPTY);
-    });
+    transition(DELETING, true);
+    cancelInterview(id)
+      .then(() => {
+        transition(EMPTY);
+      })
+      .catch((err) => {
+        console.log('delete-appointment', err.message);
+        transition(ERROR_DELETE, true);
+      });
   };
 
   // Show should get onEdit and onDelete props
@@ -63,7 +77,11 @@ export default function Appointment(props) {
       {mode === CREATE && <Form onSave={save} onCancel={back} interviewers={interviewers} />}
       {mode === EDIT && <Form onSave={save} onCancel={back} interviewers={interviewers} student={interview.student} interviewer={interview.interviewer.id} />}
       {mode === SAVING && <Status message={SAVING} />}
+      {mode === DELETING && <Status message={DELETING} />}
       {mode === CONFIRM && <Confirm message='Cancel Interview?' onCancel={back} onConfirm={deleteAppointment} />}
+      {mode === ERROR_SAVE && <Error message='saving failed' onClose={back} />}
+      {mode === ERROR_DELETE && <Error message='deleting failed' onClose={back} />}
+    
     </article>
   );
 };
