@@ -17,17 +17,20 @@ export default function Form(props) {
   const reset = () => {
     setStudent('');
     setInterviewer(null);
+    setError('');
   }
   const cancel = () => {
     reset();
     onCancel();
-    return <Form />;
+    // return <Form />; not sure if necessary
   }
   const validate = () => {
     if (student === "") {
       setError("Student name cannot be blank");
       return;
     }
+
+    setError("");
     onSave(student, interviewer);
   }
 
