@@ -11,29 +11,21 @@ export default function useApplicationData() {
 
   const setDay = day => setState(prev => ({ ...prev, day }));
 
-  const updateSpots = () => {
+  const updateSpots = (state, appointments, id) => {
     const updatedDays = [...state.days];
-
-    // takes counts corresponding appointments objects with interview set as null
-    const openSpots = (appointmentsIndexArray) => {
-      let countSpots = 0;
-      for (const index of appointmentsIndexArray) {
-        if (state.appointments[index].interview === null) {
-          countSpots++;
-        }
+    const dayIndex = updatedDays.findIndex(d => d.name === state.day);
+    let openSpots = 0;
+  
+    for (const appointmentIndex of updatedDays[dayIndex].appointments) {
+      if (appointments[appointmentIndex].interview === null) {
+        openSpots++;
       }
-      return countSpots;
     };
-    
-    // counts open spots for selected day in days array;
-    for (const elm of updatedDays) {
-      if (elm.name === state.day) {
-        const appointmentsArray = elm.appointments;
-        elm.spots = openSpots(appointmentsArray);
-      }
-    }
-
-    setState(prev => ({...prev, days: [...updatedDays]}));
+  
+    const updatedDay = {...updatedDays[dayIndex], spots: openSpots};
+    const newDays = updatedDays.map(d => d.name === state.day ? updatedDay : d)
+  
+    return newDays;
   };
 
   const bookInterview = (id, interview) => {
