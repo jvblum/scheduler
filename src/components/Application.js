@@ -20,7 +20,7 @@ export default function Application(props) {
 
   useEffect(() => {
     getApi();
-  }, [state]);
+  }, []);
   // this has to be changed, running getApi everytime will have the project be rejected
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
