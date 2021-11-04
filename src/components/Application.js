@@ -4,8 +4,7 @@ import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
 
-import getAppointmentsForDay from "./helpers/selectors";
-import { getInterviewersForDay, getInterview } from "components/helpers/selectors";
+import getAppointmentsForDay, { getInterviewersForDay, getInterview } from "components/helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
 
 export default function Application(props) {
@@ -18,15 +17,15 @@ export default function Application(props) {
   } = useApplicationData();
 
   useEffect(() => {
+    // init application data
     getApi();
   }, []);
-  // this has to be changed, running getApi everytime will have the project be rejected
-
+  
+  // process application data to pass as props 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day);
   const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
-  
     return (
       <Appointment
         key={appointment.id}

@@ -22,11 +22,16 @@ export default function Form(props) {
   const cancel = () => {
     reset();
     onCancel();
-    // return <Form />; not sure if necessary
   }
+
+  // run when user tries to submit form; checks if form is complete
   const validate = () => {
     if (student === "") {
       setError("Student name cannot be blank");
+      return;
+    }
+    if (interviewer === null) {
+      setError("Interviewer must be selected");
       return;
     }
 
@@ -61,7 +66,6 @@ export default function Form(props) {
         <section className="appointment__actions">
           <Button danger onClick={cancel}>Cancel</Button>
           <Button confirm onClick={() => {
-            //  to prevent booking when interviewer is null
             validate();
           }}>Save</Button>
         </section>
