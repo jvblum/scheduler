@@ -5,32 +5,27 @@ export default function useVisualMode (initial) {
   const [ history, setHistory ] = useState([ initial ]);
 
   const transition = (mode, replace) => {
-    if (replace) {
-      setHistory(prev => {
-        prev.splice(prev.length - 1, 1, mode);
-        return prev;
-      });
-    } else {
-      setHistory(prev => [...prev, mode]);
-    }
+    setHistory(prev => {
+      if (replace) {
+        const copyPrev = [...prev];
+        copyPrev.splice(prev.length - 1, 1, mode);
+        return copyPrev
+      }
+      return [...prev, mode];
+    });
     setMode(mode);
   };
 
   const back = () => {
-    // setHistory(prev => {
-    //   prev.pop();
-    //   return prev;
-    // })
-
-    // back limit
+    // back limit check
     if (history && history.length > 1) {
-      history.pop();
-      setMode(history[history.length - 1]);
+      setHistory(prev => {
+        const copyHistory = [...prev];
+        copyHistory.pop();
+        setMode(copyHistory[copyHistory.length - 1]);
+        return copyHistory;
+      }); // nesting setters to manage async time
     }
   };
- 
   return { mode, transition, back };
 };
-
-// note: using history.pop instead of something like setHistory(prev => {prev.pop; return prev;}) because of what seems to be asychronous time. 
-// setMode runs before the history updates;
