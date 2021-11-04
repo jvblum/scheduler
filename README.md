@@ -31,3 +31,4 @@ Install dependencies with `npm install`.
 Run with `npm start`.
 
 ---
+** styling and other aspects provided by Lighthouse Labs for the project
